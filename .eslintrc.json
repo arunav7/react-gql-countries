@@ -1,0 +1,73 @@
+{
+  "env": {
+    "browser": true,
+    "es6": true
+  },
+  "extends": [
+    "eslint:recommended",
+    "airbnb",
+    "airbnb/hooks",
+    "plugin:react/recommended",
+    "plugin:react/jsx-runtime", // disables React must be in scope error
+    "plugin:@typescript-eslint/recommended",
+    "plugin:@typescript-eslint/recommended-requiring-type-checking",
+    "plugin:import/recommended",
+    // "plugin:prettier/recommended"
+    "prettier"
+  ],
+  // Specifying Parser
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
+    },
+    "ecmaVersion": "latest",
+    "sourceType": "module",
+    "project": ["./tsconfig.json"]
+  },
+  // Configuring third-party plugins
+  "plugins": ["react-refresh", "react", "react-hooks", "@typescript-eslint", "prettier"],
+  "ignorePatterns": ["src/__generated__/"],
+  "settings": {
+    "import/resolver": {
+      "typescript": {
+        "project": ["tsconfig.json"]
+      }
+    },
+    "react": {
+      "version": "18.x"
+    }
+  },
+  "rules": {
+    "react-refresh/only-export-components": ["warn", { "allowConstantExport": true }],
+    "import/extensions": "off",
+    "import/prefer-default-export": "off",
+    "no-shadow": "off",
+    "no-unused-vars": "error",
+    "linebreak-style": 0,
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": "error",
+    // disables prop-types validation
+    "react/prop-types": "off",
+    // prevents using function decleration for components
+    "react/function-component-definition": "off",
+    // prevents using extensions in import
+    "react/jsx-filename-extension": "off",
+    // defualt props no longer reqd
+    "react/require-default-props": "off",
+    "react/no-array-index-key": "off",
+    "react/jsx-props-no-spreading": "off",
+    "react/button-has-type": "off",
+    // Enforce the use of the shorthand syntax.
+    "object-shorthand": "error",
+    "no-console": "off",
+    "@typescript-eslint/no-floating-promises": "off",
+    "@typescript-eslint/no-unsafe-assignment": "off",
+    "@typescript-eslint/no-non-null-assertion": "off",
+    "jsx-a11y/no-static-element-interactions": "off",
+    "jsx-a11y/click-events-have-key-events": "off",
+    "@typescript-eslint/no-unsafe-member-access": "off",
+    "@typescript-eslint/no-unsafe-argument": "warn"
+    // "@typescript-eslint/ban-ts-comment": 0
+  }
+}
