@@ -62,6 +62,7 @@ export type CountryFilterInput = {
 export type Language = {
   __typename?: 'Language';
   code: Scalars['ID']['output'];
+  countries: Array<Country>;
   name: Scalars['String']['output'];
   native: Scalars['String']['output'];
   rtl: Scalars['Boolean']['output'];
@@ -149,6 +150,32 @@ export type GetAllCountriesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type GetAllCountriesQuery = { __typename?: 'Query', countries: Array<{ __typename?: 'Country', code: string, name: string, native: string, phone: string, currency?: string | null, emoji: string, emojiU: string, continent: { __typename?: 'Continent', name: string, code: string }, languages: Array<{ __typename?: 'Language', code: string, name: string, native: string, rtl: boolean }>, states: Array<{ __typename?: 'State', code?: string | null, name: string }> }> };
+
+export type CountryQueryVariables = Exact<{
+  code: Scalars['ID']['input'];
+}>;
+
+
+export type CountryQuery = { __typename?: 'Query', country?: { __typename?: 'Country', code: string, emoji: string, name: string, native: string, phone: string, currency?: string | null, emojiU: string, states: Array<{ __typename?: 'State', code?: string | null, name: string }>, languages: Array<{ __typename?: 'Language', code: string, name: string, native: string, rtl: boolean }> } | null };
+
+export type CountryMinQueryVariables = Exact<{
+  code: Scalars['ID']['input'];
+}>;
+
+
+export type CountryMinQuery = { __typename?: 'Query', country?: { __typename?: 'Country', code: string, emoji: string, name: string, native: string, phone: string, currency?: string | null, states: Array<{ __typename?: 'State', code?: string | null, name: string }>, languages: Array<{ __typename?: 'Language', name: string, native: string }> } | null };
+
+export type LanguagesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type LanguagesQuery = { __typename?: 'Query', languages: Array<{ __typename?: 'Language', code: string, name: string, native: string, rtl: boolean }> };
+
+export type LanguageQueryVariables = Exact<{
+  code: Scalars['ID']['input'];
+}>;
+
+
+export type LanguageQuery = { __typename?: 'Query', language?: { __typename?: 'Language', code: string, name: string, native: string, rtl: boolean } | null };
 
 
 export const GetContinentsDocument = gql`
@@ -330,3 +357,197 @@ export type GetAllCountriesQueryHookResult = ReturnType<typeof useGetAllCountrie
 export type GetAllCountriesLazyQueryHookResult = ReturnType<typeof useGetAllCountriesLazyQuery>;
 export type GetAllCountriesSuspenseQueryHookResult = ReturnType<typeof useGetAllCountriesSuspenseQuery>;
 export type GetAllCountriesQueryResult = Apollo.QueryResult<GetAllCountriesQuery, GetAllCountriesQueryVariables>;
+export const CountryDocument = gql`
+    query Country($code: ID!) {
+  country(code: $code) {
+    code
+    emoji
+    name
+    native
+    states {
+      code
+      name
+    }
+    languages {
+      code
+      name
+      native
+      rtl
+    }
+    phone
+    currency
+    emojiU
+  }
+}
+    `;
+
+/**
+ * __useCountryQuery__
+ *
+ * To run a query within a React component, call `useCountryQuery` and pass it any options that fit your needs.
+ * When your component renders, `useCountryQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useCountryQuery({
+ *   variables: {
+ *      code: // value for 'code'
+ *   },
+ * });
+ */
+export function useCountryQuery(baseOptions: Apollo.QueryHookOptions<CountryQuery, CountryQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<CountryQuery, CountryQueryVariables>(CountryDocument, options);
+      }
+export function useCountryLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<CountryQuery, CountryQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<CountryQuery, CountryQueryVariables>(CountryDocument, options);
+        }
+export function useCountrySuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<CountryQuery, CountryQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<CountryQuery, CountryQueryVariables>(CountryDocument, options);
+        }
+export type CountryQueryHookResult = ReturnType<typeof useCountryQuery>;
+export type CountryLazyQueryHookResult = ReturnType<typeof useCountryLazyQuery>;
+export type CountrySuspenseQueryHookResult = ReturnType<typeof useCountrySuspenseQuery>;
+export type CountryQueryResult = Apollo.QueryResult<CountryQuery, CountryQueryVariables>;
+export const CountryMinDocument = gql`
+    query CountryMin($code: ID!) {
+  country(code: $code) {
+    code
+    emoji
+    name
+    native
+    states {
+      code
+      name
+    }
+    languages {
+      name
+      native
+    }
+    phone
+    currency
+  }
+}
+    `;
+
+/**
+ * __useCountryMinQuery__
+ *
+ * To run a query within a React component, call `useCountryMinQuery` and pass it any options that fit your needs.
+ * When your component renders, `useCountryMinQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useCountryMinQuery({
+ *   variables: {
+ *      code: // value for 'code'
+ *   },
+ * });
+ */
+export function useCountryMinQuery(baseOptions: Apollo.QueryHookOptions<CountryMinQuery, CountryMinQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<CountryMinQuery, CountryMinQueryVariables>(CountryMinDocument, options);
+      }
+export function useCountryMinLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<CountryMinQuery, CountryMinQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<CountryMinQuery, CountryMinQueryVariables>(CountryMinDocument, options);
+        }
+export function useCountryMinSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<CountryMinQuery, CountryMinQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<CountryMinQuery, CountryMinQueryVariables>(CountryMinDocument, options);
+        }
+export type CountryMinQueryHookResult = ReturnType<typeof useCountryMinQuery>;
+export type CountryMinLazyQueryHookResult = ReturnType<typeof useCountryMinLazyQuery>;
+export type CountryMinSuspenseQueryHookResult = ReturnType<typeof useCountryMinSuspenseQuery>;
+export type CountryMinQueryResult = Apollo.QueryResult<CountryMinQuery, CountryMinQueryVariables>;
+export const LanguagesDocument = gql`
+    query Languages {
+  languages {
+    code
+    name
+    native
+    rtl
+  }
+}
+    `;
+
+/**
+ * __useLanguagesQuery__
+ *
+ * To run a query within a React component, call `useLanguagesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useLanguagesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useLanguagesQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useLanguagesQuery(baseOptions?: Apollo.QueryHookOptions<LanguagesQuery, LanguagesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<LanguagesQuery, LanguagesQueryVariables>(LanguagesDocument, options);
+      }
+export function useLanguagesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<LanguagesQuery, LanguagesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<LanguagesQuery, LanguagesQueryVariables>(LanguagesDocument, options);
+        }
+export function useLanguagesSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<LanguagesQuery, LanguagesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<LanguagesQuery, LanguagesQueryVariables>(LanguagesDocument, options);
+        }
+export type LanguagesQueryHookResult = ReturnType<typeof useLanguagesQuery>;
+export type LanguagesLazyQueryHookResult = ReturnType<typeof useLanguagesLazyQuery>;
+export type LanguagesSuspenseQueryHookResult = ReturnType<typeof useLanguagesSuspenseQuery>;
+export type LanguagesQueryResult = Apollo.QueryResult<LanguagesQuery, LanguagesQueryVariables>;
+export const LanguageDocument = gql`
+    query Language($code: ID!) {
+  language(code: $code) {
+    code
+    name
+    native
+    rtl
+  }
+}
+    `;
+
+/**
+ * __useLanguageQuery__
+ *
+ * To run a query within a React component, call `useLanguageQuery` and pass it any options that fit your needs.
+ * When your component renders, `useLanguageQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useLanguageQuery({
+ *   variables: {
+ *      code: // value for 'code'
+ *   },
+ * });
+ */
+export function useLanguageQuery(baseOptions: Apollo.QueryHookOptions<LanguageQuery, LanguageQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<LanguageQuery, LanguageQueryVariables>(LanguageDocument, options);
+      }
+export function useLanguageLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<LanguageQuery, LanguageQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<LanguageQuery, LanguageQueryVariables>(LanguageDocument, options);
+        }
+export function useLanguageSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<LanguageQuery, LanguageQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<LanguageQuery, LanguageQueryVariables>(LanguageDocument, options);
+        }
+export type LanguageQueryHookResult = ReturnType<typeof useLanguageQuery>;
+export type LanguageLazyQueryHookResult = ReturnType<typeof useLanguageLazyQuery>;
+export type LanguageSuspenseQueryHookResult = ReturnType<typeof useLanguageSuspenseQuery>;
+export type LanguageQueryResult = Apollo.QueryResult<LanguageQuery, LanguageQueryVariables>;

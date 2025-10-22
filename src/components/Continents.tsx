@@ -1,15 +1,12 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import CircularProgress from '@mui/material/CircularProgress';
 
-import { Continent, Country, useGetContinentsQuery } from '../__generated__/operations';
+import { Continent, Country, useGetContinentsSuspenseQuery } from '../__generated__/operations';
 
 export const Continents = (): JSX.Element => {
   const { state } = useLocation();
   const navigate = useNavigate();
-  console.log({ navigate, state });
-  const [continents, setContinents] = useState<Continent[]>([]);
-  const { data, loading, error } = useGetContinentsQuery();
+  const { data } = useGetContinentsSuspenseQuery();
 
   const navigateToCountries = (path: string, countries?: Country[]) => {
     navigate(`countries/${path}`, {
@@ -18,13 +15,6 @@ export const Continents = (): JSX.Element => {
       },
     });
   };
-
-  useEffect(() => {
-    if (data) {
-      setContinents(data?.continents as Continent[]);
-    }
-    console.log(data);
-  }, [data]);
 
   useEffect(() => {
     if (state && state.previousPath === '/all-languages') {
@@ -42,20 +32,16 @@ export const Continents = (): JSX.Element => {
         flexWrap: 'wrap',
       }}
     >
-      {loading && <CircularProgress />}
-      {error && <p>`Error: ${error.message}`</p>}
-      {!loading &&
-        !error &&
-        continents.map(continent => (
-          <div
-            key={continent.code}
-            className='continents'
-            onClick={() => navigateToCountries(continent.code, continent.countries)}
-          >
-            <p>{continent.name}</p>
-            <p>{continent.code}</p>
-          </div>
-        ))}
+      {(data?.continents as Continent[]).map(continent => (
+        <div
+          key={continent.code}
+          className='continents'
+          onClick={() => navigateToCountries(continent.code, continent.countries)}
+        >
+          <p>{continent.name}</p>
+          <p>{continent.code}</p>
+        </div>
+      ))}
     </div>
   );
 };

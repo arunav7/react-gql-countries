@@ -1,26 +1,13 @@
-import { useEffect, useState } from 'react';
-import CircularProgress from '@mui/material/CircularProgress';
+import { useNavigate } from 'react-router-dom';
 
+import { useGetAllCountriesSuspenseQuery } from '../__generated__/operations';
 import { usePagination } from '../hooks/usePagination';
-import { Country, useGetAllCountriesQuery } from '../__generated__/operations';
 
 export const AllCountries = () => {
-  const [countries, setCountries] = useState<Country[]>([]);
-  const { data, loading, error } = useGetAllCountriesQuery();
-  const { endPageIndex, startPageIndex, setPage, currentPageIndex, totalPages } = usePagination(
-    12,
-    countries.length,
-  );
-
-  useEffect(() => {
-    console.log({ data });
-    if (data) {
-      setCountries(data?.countries as Country[]);
-    }
-  }, [data]);
-
-  if (loading) return <CircularProgress />;
-  if (error) return <p>Error: `${error.name}`</p>;
+  const navigate = useNavigate();
+  const { data } = useGetAllCountriesSuspenseQuery();
+  const countries = data.countries;
+  const { endPageIndex, startPageIndex, setPage, totalPages } = usePagination(12, countries.length);
 
   return (
     <div
@@ -43,14 +30,26 @@ export const AllCountries = () => {
           <div
             className='countries'
             key={country?.code}
+            onClick={() => navigate(`/country/${country?.code}`)}
           >
             <p>{country.name}</p>
             <span>{country.code}</span>
             <p>Currency: {country.currency}</p>
+            {/* <p>isIndian: {country.isAsian}</p> */}
           </div>
         ))}
       </div>
-      <div>
+      <div style={{ display: 'flex', gap: '0.5rem', flex: 1, flexWrap: 'wrap' }}>
+        {Array.from({ length: totalPages }, (_, index) => index + 1).map(page => (
+          <button
+            key={page}
+            onClick={() => setPage(page)}
+          >
+            {page}
+          </button>
+        ))}
+      </div>
+      {/* <div>
         <button
           onClick={() => setPage(currentPageIndex - 1)}
           disabled={currentPageIndex === 1}
@@ -63,7 +62,7 @@ export const AllCountries = () => {
         >
           Next
         </button>
-      </div>
+      </div> */}
     </div>
   );
 };

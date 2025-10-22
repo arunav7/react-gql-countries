@@ -40,11 +40,14 @@
 .navbar {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   flex-wrap: wrap;
   padding: 1rem;
   background: darksalmon;
   margin-top: 0.5rem;
   margin-bottom: 0.5rem;
+  position: sticky;
+  top: 2px;
 }
 
 .navbar > .link {
